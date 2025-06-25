@@ -4,14 +4,14 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const SignupPage = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: '',
-    phone_number: ''
+    password: ''
   });
 
-  //const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
@@ -33,23 +33,17 @@ const SignupPage = () => {
       setSuccess(true);
       setMessage('✅ Signup successful! Redirecting to login... 😄');
 
-      console.log(res.data);
-
-      // Reset form after delay
+      // Redirect after delay
       setTimeout(() => {
-        setFormData({
-          username: '',
-          email: '',
-          password: '',
-          phone_number: ''
-        });
-        setSuccess(false);
-        setMessage('');
-        setLoading(false);
-      }, 4000); // 4 seconds delay
+        router.push('/login');
+      }, 3000);
     } catch (error) {
       console.error("Signup failed:", error.response?.data);
-      setMessage('❌ Signup failed. Please check your inputs.');
+      if (error.response?.data?.email?.[0]?.includes('already exists') || error.response?.data?.username?.[0]?.includes('already exists')) {
+        setMessage('❌ Email or username already exists. Please use different credentials.');
+      } else {
+        setMessage('❌ Signup failed. Please check your inputs.');
+      }
       setLoading(false);
     }
   };
@@ -60,15 +54,18 @@ const SignupPage = () => {
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Join Campus Nexus</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
-            required
-          />
+          <div>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              required
+            />
+            <p className="text-xs text-purple-200 mt-1">👤 Please enter your <strong>first name only</strong>.</p>
+          </div>
 
           <input
             type="email"
@@ -96,22 +93,6 @@ const SignupPage = () => {
             >
               {showPassword ? 'Hide' : 'Show'}
             </span>
-          </div>
-
-          <div>
-            <input
-              type="tel"
-              name="phone_number"
-              placeholder="Phone Number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
-              required
-            />
-            <p className="text-xs text-purple-200 mt-1">
-              ⚠️ Please enter your phone number carefully. <br />
-              <strong>It can't be edited after registration.</strong>
-            </p>
           </div>
 
           <button
