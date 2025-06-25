@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['campusconnect.onrender.com']
 CORS_ALLOWED_ORIGINS = [
-    'https://plates4-all.vercel.app',
+    'https://www.campusconnects.in/',
 ]
 
 # Application definition
