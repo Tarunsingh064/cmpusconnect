@@ -27,8 +27,10 @@ SECRET_KEY = 'django-insecure-w&q_wdq!@o*jb#zc!^@qfmu8$%a4(918#k==p0-f32$n&06%(&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['campusconnect.onrender.com']
+CORS_ALLOWED_ORIGINS = [
+    'https://plates4-all.vercel.app',
+]
 
 # Application definition
 
@@ -131,7 +133,7 @@ STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
