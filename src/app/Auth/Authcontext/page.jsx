@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (username, password) => {
-    const res = await axios.post('http://127.0.0.1:8000/api/user/login/', {
+    const res = await axios.post('https://campusconnect-ki0p.onrender.com/api/user/login/', {
       username,
       password,
     });

@@ -29,7 +29,7 @@ const SignupPage = () => {
     setLoading(true);
     setMessage('');
     try {
-      const res = await axios.post('http://localhost:8000/api/user/register/', formData);
+      const res = await axios.post('https://campusconnect-ki0p.onrender.com/api/user/register/', formData);
       setSuccess(true);
       setMessage('✅ Signup successful! Redirecting to login... 😄');
 
