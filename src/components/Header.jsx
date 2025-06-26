@@ -42,7 +42,7 @@ export default function Header() {
             {user ? (
               <>
                 <Link
-                  href="/dashboard"
+                  href="/src/app/Auth/dashboard"
                   className="text-white font-medium bg-cyan-700 px-4 py-2 rounded hover:bg-cyan-800 transition"
                 >
                   Dashboard

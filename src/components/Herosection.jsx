@@ -6,8 +6,11 @@ import {
  FiUser, FiUsers, FiCalendar, FiBookOpen, FiAward,
   FiMessageCircle, FiHeart, FiActivity, FiMonitor
 } from 'react-icons/fi';
+import { useAuth } from '@/app/Auth/Authcontext/page';
+import Link from 'next/link';
 
-export default function HeroSection() {
+export default function Herosection() {
+  const {user} = useAuth();
   return (
     <>
     <section className="min-h-screen bg-[#0f172a] text-white pt-24 px-6 md:px-16 pb-6">
@@ -30,9 +33,23 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex gap-4 flex-wrap">
-            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition">
-              Get Started
-            </button>
+            {user ? (
+  <Link
+  href="/Auth/dashboard"
+  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition"
+>
+  Explore
+</Link>
+
+) : (
+  <Link
+  href="/Auth/login"
+  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition"
+>
+  Get Started
+</Link>
+
+)}
             <button className="flex items-center gap-2 border border-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-800 transition">
               <FiArrowRight />
               Browse Projects
