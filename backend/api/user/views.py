@@ -31,21 +31,34 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializers
-    def post(self,request,*args, **kwargs):
-        username= request.data.get('username')
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(username=username,password = password)
+        user = authenticate(username=username, password=password)
 
         if user is not None:
-            refresh  = RefreshToken.for_user(user)
+            refresh = RefreshToken.for_user(user)
             user_serializer = UserSerializers(user)
-            return Response({
+            response = Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'user': user_serializer.data
             })
+
+            # ✅ Set access token in secure HttpOnly cookie
+            response.set_cookie(
+                key='access_token',
+                value=str(refresh.access_token),
+                httponly=True,
+                secure=False,  # Change to True in production (HTTPS)
+                samesite='Lax',
+                max_age=3600
+            )
+
+            return response
         else:
-            return Response({'detail':'Invalid credentials'},status=401)
+            return Response({'detail': 'Invalid credentials'}, status=401)
 class DashboadView(APIView):
     permission_classes = ({IsAuthenticated})
     def get(self,request):
@@ -62,7 +75,12 @@ class LogoutView(APIView):
             refresh_token = request.data.get("refresh")
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response({"message": "Successfully logged out"}, status=200)
+            response = Response({"message": "Successfully logged out"}, status=200)
+
+            # ✅ Delete cookie
+            response.delete_cookie('access_token')
+
+            return response
         except Exception as e:
             return Response({"detail": "Invalid or expired token"}, status=400)
 
