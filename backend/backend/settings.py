@@ -13,8 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=os.path.join(BASE_DIR.parent, '.env'))
 
 
 
@@ -29,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['campusconnect-ki0p.onrender.com']
 CORS_ALLOWED_ORIGINS = [
-    'https://www.campusconnects.in/',
+    'https://www.campusconnects.in',
 ]
 
 # Application definition
@@ -162,11 +164,12 @@ SIMPLE_JWT = {
 APPEND_SLASH = False
 
 
-EMAIL_HOST = 'smtp.gmail.com'  # Or your provider's SMTP server
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'taruncoder200@gmail.com'        # Your real email
-EMAIL_HOST_PASSWORD = 'duln ahld qhni rnsa'  # App-specific password (not your main password)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')# App-specific password (not your main password)
 DEFAULT_FROM_EMAIL = 'Tarun <taruncoder200@gmail.com>'
 
 '''EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
