@@ -1,3 +1,7 @@
+# urls.py
 from django.urls import path
+from .views import UserPortfolioView
 
-urlpatterns = []
+urlpatterns = [
+    path('portfolio/', UserPortfolioView.as_view(), name='user-portfolio'),
+]
