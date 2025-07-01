@@ -3,7 +3,7 @@
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer'; // ✅ Only once
-import { AuthProvider }  from './Auth/Authcontext/page';
+import { AuthProvider }  from '../Authcontext/Authcontext';
 
 
 export const metadata = {

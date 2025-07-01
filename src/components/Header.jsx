@@ -4,7 +4,7 @@ import { FiLogIn } from 'react-icons/fi';
 import { FaUser } from 'react-icons/fa';
 import { useState } from 'react';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { useAuth } from '../app/Auth/Authcontext/page'; // ✅ adjust path if needed
+import { useAuth } from '../Authcontext/Authcontext'; // ✅ adjust path if needed
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);

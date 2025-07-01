@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/app/Auth/Authcontext/page';
+import { useAuth } from '@/Authcontext/Authcontext';
 
 const LoginPage = () => {
   const router = useRouter();

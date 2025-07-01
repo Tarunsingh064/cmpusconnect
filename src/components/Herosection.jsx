@@ -6,7 +6,7 @@ import {
  FiUser, FiUsers, FiCalendar, FiBookOpen, FiAward,
   FiMessageCircle, FiHeart, FiActivity, FiMonitor
 } from 'react-icons/fi';
-import { useAuth } from '@/app/Auth/Authcontext/page';
+import { useAuth } from '@/Authcontext/Authcontext';
 import Link from 'next/link';
 
 export default function Herosection() {
