@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import RetrieveAPIView
 
 
 # Create your views here
@@ -27,3 +28,14 @@ class UserPortfolioView(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class PublicPortfolioView(RetrieveAPIView):
+    serializer_class = PortfolioSerializer
+    lookup_field = 'user__username'  # allow lookup by username
+
+    def get_object(self):
+        username = self.kwargs.get('username')
+        try:
+            return userbio.objects.get(user__username=username)
+        except userbio.DoesNotExist:
+            raise NotFound("No portfolio found for this user.")
