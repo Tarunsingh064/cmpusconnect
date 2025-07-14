@@ -1,82 +1,88 @@
-export default function page() {
+'use client';
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+export default function Page() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white font-sans">
       {/* Topbar */}
-      <div className="w-full bg-white shadow px-6 py-3 flex justify-between items-center">
+      <div className="w-full bg-black/30 backdrop-blur-md shadow-md px-10 py-4 flex justify-between items-center text-lg">
         <input
           type="text"
           placeholder="Search students, projects, hackathons..."
-          className="flex-1 max-w-xl px-4 py-2 border rounded-md outline-none bg-gray-100"
+          className="flex-1 max-w-2xl px-6 py-3 rounded-xl bg-white/10 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-purple-500 transition-all"
         />
-        <div className="flex items-center gap-4 ml-6">
-          <div className="relative">
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">3</span>
-            <i className="fa-regular fa-bell text-gray-600"></i>
-          </div>
-          <div className="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold">
-            JD
-          </div>
-        </div>
       </div>
 
       {/* Main Layout */}
-      <div className="flex">
+      <div className="flex min-h-screen">
         {/* Left Sidebar */}
-        <div className="w-1/5 border-r bg-white p-4 space-y-6">
-          <h2 className="text-lg font-semibold">DevConnect</h2>
-          <ul className="space-y-4 text-sm">
-            <li className="font-medium text-blue-600">Feed</li>
-            <li>Find Teams</li>
-            <li>Alumni Connect</li>
-            <li>Messages</li>
-            <li>Mentorship</li>
-            <li>Settings</li>
+        <aside className="w-1/4 p-8 space-y-10 bg-white/10 backdrop-blur-sm rounded-tr-3xl rounded-br-3xl shadow-inner text-white">
+          <h2 className="text-3xl font-bold tracking-wide text-purple-400">DevConnect</h2>
+
+          <ul className="space-y-5 text-lg font-medium">
+            <li className="text-purple-300 hover:text-white transition">Feed</li>
+            <li className="hover:text-white transition">Find Teams</li>
+            <li className="hover:text-white transition">Alumni Connect</li>
+            <li className="hover:text-white transition">Messages</li>
+            <li className="hover:text-white transition">Mentorship</li>
           </ul>
-          <div className="mt-10 p-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg text-sm text-center">
-            Weekly Challenge<br />
-            <button className="mt-2 px-4 py-1 bg-white text-purple-600 font-semibold rounded-md">
+
+          <Link href="/Auth/setting" className="block text-purple-300 hover:text-white transition text-lg">
+            ⚙️ Settings
+          </Link>
+
+          <div className="mt-16 p-6 bg-gradient-to-r from-purple-600 to-indigo-500 text-white rounded-2xl text-center shadow-lg">
+            <p className="text-xl font-semibold">Weekly Challenge</p>
+            <button className="mt-4 px-6 py-2 bg-white text-purple-700 font-semibold rounded-lg shadow-md hover:scale-105 transition">
               Join Challenge
             </button>
           </div>
-        </div>
+        </aside>
 
-        {/* Middle Section (you’ll build this later) */}
-        <div className="w-3/5 bg-gray-100 p-6 min-h-screen">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-10 text-center text-gray-500">
-            {/* Placeholder */}
-            This is your middle content area. You can build post feed, editor, etc. here later.
-          </div>
-        </div>
+        {/* Middle Section */}
+        <main className="w-2/4 p-12">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="border-2 border-dashed border-gray-500 rounded-2xl p-16 text-center text-gray-300"
+          >
+            🚧 This is your middle content area. You can build post feed, editor, etc. here later.
+          </motion.div>
+        </main>
 
         {/* Right Sidebar */}
-        <div className="w-1/5 border-l bg-white p-4 space-y-8">
+        <aside className="w-1/4 p-10 space-y-12 bg-white/10 backdrop-blur-sm rounded-tl-3xl rounded-bl-3xl shadow-inner">
           {/* Alumni Spotlight */}
           <div>
-            <h3 className="text-md font-semibold mb-3">Alumni Spotlight</h3>
-            <div className="space-y-2 text-sm">
+            <h3 className="text-xl font-bold mb-5 text-purple-300">Alumni Spotlight</h3>
+            <div className="space-y-6 text-sm">
               <div>
-                <p className="font-medium">David Kim</p>
-                <p className="text-gray-500">Software Engineer at Google<br />Class of 2019</p>
+                <p className="font-semibold text-white">David Kim</p>
+                <p className="text-gray-400">Software Engineer at Google<br />Class of 2019</p>
               </div>
               <div>
-                <p className="font-medium">Lisa Zhang</p>
-                <p className="text-gray-500">Product Manager at Meta<br />Class of 2020</p>
+                <p className="font-semibold text-white">Lisa Zhang</p>
+                <p className="text-gray-400">Product Manager at Meta<br />Class of 2020</p>
               </div>
-              <button className="mt-2 text-blue-500 text-sm">View All Alumni</button>
+              <button className="mt-4 text-purple-300 font-medium hover:underline">
+                View All Alumni
+              </button>
             </div>
           </div>
 
           {/* Trending Tech */}
           <div>
-            <h3 className="text-md font-semibold mb-2">Trending Tech</h3>
-            <ul className="text-sm space-y-1">
-              <li>React <span className="text-green-600 ml-1">+15%</span></li>
-              <li>Python <span className="text-green-600 ml-1">+12%</span></li>
-              <li>Next.js <span className="text-green-600 ml-1">+20%</span></li>
-              <li>TypeScript <span className="text-green-600 ml-1">+18%</span></li>
+            <h3 className="text-xl font-bold mb-4 text-purple-300">Trending Tech</h3>
+            <ul className="space-y-3 text-gray-200">
+              <li>React <span className="text-green-400 ml-2">+15%</span></li>
+              <li>Python <span className="text-green-400 ml-2">+12%</span></li>
+              <li>Next.js <span className="text-green-400 ml-2">+20%</span></li>
+              <li>TypeScript <span className="text-green-400 ml-2">+18%</span></li>
             </ul>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );

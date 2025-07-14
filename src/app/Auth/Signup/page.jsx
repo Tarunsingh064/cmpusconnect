@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 
 const SignupPage = () => {
   const router = useRouter();
@@ -32,14 +33,13 @@ const SignupPage = () => {
       const res = await axios.post('https://campusconnect-ki0p.onrender.com/api/user/register/', formData);
       setSuccess(true);
       setMessage('✅ Signup successful! Redirecting to login... 😄');
-
-      // Redirect after delay
-      setTimeout(() => {
-        router.push('/login');
-      }, 3000);
+      setTimeout(() => router.push('/login'), 3000);
     } catch (error) {
       console.error("Signup failed:", error.response?.data);
-      if (error.response?.data?.email?.[0]?.includes('already exists') || error.response?.data?.username?.[0]?.includes('already exists')) {
+      if (
+        error.response?.data?.email?.[0]?.includes('already exists') ||
+        error.response?.data?.username?.[0]?.includes('already exists')
+      ) {
         setMessage('❌ Email or username already exists. Please use different credentials.');
       } else {
         setMessage('❌ Signup failed. Please check your inputs.');
@@ -49,50 +49,59 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#5c1d91] via-[#6d28d9] to-[#a855f7] flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-xl p-8 rounded-2xl shadow-xl w-full max-w-md transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center">Join Campus Nexus</h2>
+    <div className="min-h-screen bg-gradient-to-br from-[#2e026d] via-[#6c22bd] to-[#8b5cf6] flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl text-white transition-transform duration-300 hover:scale-[1.015] hover:shadow-purple-800/40">
+        <h2 className="text-3xl font-bold text-center mb-6">Create Your Account</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
+            <label htmlFor="username" className="block text-sm mb-1">Username</label>
             <input
+              id="username"
               type="text"
               name="username"
-              placeholder="Username"
+              placeholder="Enter your first name"
               value={formData.username}
               onChange={handleChange}
               className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-            <p className="text-xs text-purple-200 mt-1">👤 Please enter your <strong>first name only</strong>.</p>
+            <p className="text-xs text-purple-200 mt-1">👤 First name only.</p>
           </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
-            required
-          />
-
-          <div className="relative">
+          <div>
+            <label htmlFor="email" className="block text-sm mb-1">Email</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              placeholder="Password"
-              value={formData.password}
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-            <span
-              onClick={() => setShowPassword(prev => !prev)}
-              className="absolute right-3 top-3 cursor-pointer text-sm text-purple-300"
+          </div>
+
+          <div className="relative">
+            <label htmlFor="password" className="block text-sm mb-1">Password</label>
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Choose a strong password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full p-3 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-9 text-purple-300 hover:text-white transition"
             >
-              {showPassword ? 'Hide' : 'Show'}
-            </span>
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <button
@@ -114,6 +123,11 @@ const SignupPage = () => {
             </p>
           )}
         </form>
+
+        <div className="mt-6 text-center text-sm text-purple-200 space-y-1">
+          <p>Already have an account? <a href="/Auth/login" className="underline hover:text-white transition">Log In</a></p>
+          <p>Need help? <a href="/support" className="underline hover:text-white transition">Contact Support</a></p>
+        </div>
       </div>
     </div>
   );

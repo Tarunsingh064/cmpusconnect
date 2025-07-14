@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
@@ -10,10 +11,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    const storedUser = localStorage.getItem('user');
-    if (accessToken && storedUser) {
-      setUser(JSON.parse(storedUser)); // Set from localStorage
+    const access = Cookies.get('access_token');
+    const userData = Cookies.get('user');
+
+    if (access && userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      router.push('/Auth/login'); // updated login route
     }
   }, []);
 
@@ -23,61 +27,75 @@ export const AuthProvider = ({ children }) => {
       password,
     });
 
-    // Save tokens
-    localStorage.setItem('access_token', res.data.access);
-    localStorage.setItem('refresh_token', res.data.refresh);
+    const cookieOptions = {
+      sameSite: 'Strict',
+      // secure: true, // ❌ remove in dev to allow cookies over http
+    };
 
-    // Save and set user from response
-    localStorage.setItem('user', JSON.stringify(res.data.user));
+    Cookies.set('access_token', res.data.access, cookieOptions);
+    Cookies.set('refresh_token', res.data.refresh, cookieOptions);
+    Cookies.set('user', JSON.stringify(res.data.user), cookieOptions);
+
     setUser(res.data.user);
-
     return true;
   };
 
   const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    console.log('Logging out...');
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
+    Cookies.remove('user');
     setUser(null);
-    router.push('/login');
+    router.push('/Auth/login'); // updated login route
   };
 
-  // ✅ Add token refresh + retry logic
   useEffect(() => {
-    const axiosRequestInterceptor = axios.interceptors.request.use(
-      async (config) => {
-        const accessToken = localStorage.getItem('access_token');
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        const token = Cookies.get('access_token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
       (error) => Promise.reject(error)
     );
 
-    const axiosResponseInterceptor = axios.interceptors.response.use(
+    const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
 
-        // If access token is expired and it's the first retry attempt
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (
+          error.response?.status === 401 &&
+          !originalRequest._retry &&
+          !originalRequest.url.includes('/login') &&
+          !originalRequest.url.includes('/token/refresh')
+        ) {
           originalRequest._retry = true;
 
+          const refresh = Cookies.get('refresh_token');
+          if (!refresh) {
+            console.warn('No refresh token, user probably logged out.');
+            return Promise.reject(error); // don't force logout
+          }
+
           try {
-            const refreshToken = localStorage.getItem('refresh_token');
             const res = await axios.post('https://campusconnect-ki0p.onrender.com/api/user/token/refresh/', {
-              refresh: refreshToken,
+              refresh,
             });
 
-            const newAccessToken = res.data.access;
-            localStorage.setItem('access_token', newAccessToken);
+            const newAccess = res.data.access;
+            Cookies.set('access_token', newAccess, {
+              sameSite: 'Strict',
+              // secure: true, // ❌ remove in dev
+            });
 
-            // Retry original request with new access token
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            return axios(originalRequest);
-          } catch (refreshError) {
-            logout(); // Refresh token failed – logout user
+            originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+            return axios(originalRequest); // retry original request
+          } catch (err) {
+            logout(); // only logout if refresh actually fails
+            return Promise.reject(err);
           }
         }
 
@@ -85,10 +103,9 @@ export const AuthProvider = ({ children }) => {
       }
     );
 
-    // Cleanup interceptors on unmount
     return () => {
-      axios.interceptors.request.eject(axiosRequestInterceptor);
-      axios.interceptors.response.eject(axiosResponseInterceptor);
+      axios.interceptors.request.eject(requestInterceptor);
+      axios.interceptors.response.eject(responseInterceptor);
     };
   }, []);
 
