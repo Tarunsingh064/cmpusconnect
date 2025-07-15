@@ -28,17 +28,16 @@ export default function PortfolioSection() {
   }, [user]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 ">
+    <div className="h-screen flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl p-6 relative overflow-hidden"
+        className="w-full max-w-md h-[80vh] bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl p-6 relative overflow-hidden"
       >
-        {/* Optional glowing border ring */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#6366f1]/20 via-transparent to-[#ec4899]/20 blur-[2px] pointer-events-none" />
 
-        <div className="relative z-10 space-y-5 max-h-[75vh] overflow-y-auto custom-scroll text-white">
+        <div className="relative z-10 space-y-5 h-full overflow-y-auto custom-scroll text-white">
           {/* Username and Profile Image */}
           <div className="text-center">
             <h2 className="text-2xl font-semibold">{user?.username}</h2>
@@ -71,17 +70,12 @@ export default function PortfolioSection() {
 }
 
 function InfoRow({ label, value, scrollable = false }) {
-  const content =
-    scrollable && value?.trim().split(/\s+/).length > 200
-      ? value.trim().split(/\s+/).slice(0, 200).join(' ') + '...'
-      : value;
-
   return (
     <div className="flex flex-col border-b border-white/10 pb-2">
       <span className="text-gray-400 text-xs mb-1">{label}</span>
       {scrollable ? (
         <div className="max-h-24 overflow-y-auto text-xs p-2 bg-white/5 rounded-md whitespace-pre-wrap custom-scroll">
-          {content || '—'}
+          {value || '—'}
         </div>
       ) : (
         <span className="text-sm font-medium text-white break-words">{value || '—'}</span>
