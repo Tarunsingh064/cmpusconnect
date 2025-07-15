@@ -11,7 +11,7 @@ import Link from 'next/link';
 export default function PortfolioSection() {
   const { user } = useAuth();
   const [bio, setBio] = useState(null);
-  const [bioExists, setBioExists] = useState(true); // assume true initially
+  const [bioExists, setBioExists] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function PortfolioSection() {
         setBio(res.data);
       } catch (err) {
         console.error('Failed to load portfolio:', err);
-        setBioExists(false); // bio doesn't exist
+        setBioExists(false);
       }
     };
 
@@ -34,7 +34,6 @@ export default function PortfolioSection() {
     }
   }, [user]);
 
-  // If bio does not exist, show Create Bio button
   if (!bioExists) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
@@ -50,7 +49,6 @@ export default function PortfolioSection() {
     );
   }
 
-  // While loading
   if (!bio) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
@@ -59,22 +57,19 @@ export default function PortfolioSection() {
     );
   }
 
-  // If bio exists
   return (
     <div className="w-full p-4 sm:p-6 lg:p-10 flex items-center justify-center bg-transparent">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="w-full max-w-5xl bg-white dark:bg-gray-900 text-white rounded-2xl shadow-2xl border border-gray-700 p-6 md:p-10"
+        className="w-full max-w-3xl sm:max-w-4xl bg-white dark:bg-gray-900 text-white rounded-2xl shadow-2xl border border-gray-700 p-6 md:p-10"
       >
-        {/* Username */}
         <div className="text-center mb-6">
           <h2 className="text-3xl md:text-4xl font-bold text-yellow-400">{user?.username}</h2>
           <p className="text-sm text-gray-400">User Profile</p>
         </div>
 
-        {/* Profile Image */}
         <div className="flex justify-center mb-6">
           <div className="w-32 h-32 md:w-36 md:h-36 relative rounded-full overflow-hidden border-4 border-indigo-500 shadow-md">
             <Image
@@ -86,7 +81,6 @@ export default function PortfolioSection() {
           </div>
         </div>
 
-        {/* Info Fields */}
         <div className="space-y-4 text-sm md:text-base">
           <InfoRow label="Email" value={user?.email} />
           <InfoRow label="Bio" value={bio.bio} scrollable />
@@ -99,17 +93,23 @@ export default function PortfolioSection() {
   );
 }
 
-// ✅ Modified InfoRow Component with scrollable support
+// ✅ InfoRow with scroll + 200 word limit
 function InfoRow({ label, value, scrollable = false }) {
+  const wordCount = value ? value.trim().split(/\s+/).length : 0;
+  const limitedValue =
+    scrollable && wordCount > 200
+      ? value.trim().split(/\s+/).slice(0, 200).join(' ') + '...'
+      : value;
+
   return (
-    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b pb-2 border-gray-700 gap-2">
-      <span className="text-gray-400">{label}</span>
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b pb-4 border-gray-700 gap-2">
+      <span className="text-gray-400 font-medium sm:w-1/4">{label}</span>
       {scrollable ? (
-        <div className="max-h-24 overflow-y-auto p-2 bg-zinc-800 rounded-md text-white w-full sm:w-2/3 text-sm whitespace-pre-wrap">
-          {value || '—'}
+        <div className="max-h-32 overflow-y-auto p-3 bg-zinc-800 rounded-md text-white w-full sm:w-3/4 text-sm whitespace-pre-wrap scrollbar-thin scrollbar-thumb-yellow-400 scrollbar-track-gray-700">
+          {limitedValue || '—'}
         </div>
       ) : (
-        <span className="font-medium text-white text-right sm:text-left break-words">
+        <span className="font-medium text-white text-right sm:text-left break-words sm:w-3/4">
           {value || '—'}
         </span>
       )}

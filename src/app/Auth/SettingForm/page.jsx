@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation'; // ✅ Added for redirect
 
+
 export default function SettingsForm() {
   const [form, setForm] = useState({
     bio: '',
@@ -16,6 +17,7 @@ export default function SettingsForm() {
   const [successMsg, setSuccessMsg] = useState('');
   const [bioExists, setBioExists] = useState(true);
   const router = useRouter(); // ✅ Used for redirect
+
 
   useEffect(() => {
     const fetchUserBio = async () => {
@@ -37,12 +39,7 @@ export default function SettingsForm() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // ✅ Bio word limit check: max 200 characters (spaces included)
-    if (name === 'bio' && value.length > 200) return;
-
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -59,10 +56,6 @@ export default function SettingsForm() {
         },
       });
 
-      setSuccessMsg(bioExists ? '✅ Bio updated successfully!' : '✅ Bio created successfully!');
-      setBioExists(true);
-
-      // ✅ Redirect after creating new bio
       if (!bioExists) {
         setTimeout(() => {
           router.push('/');
@@ -74,6 +67,7 @@ export default function SettingsForm() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="w-full py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-black rounded-3xl shadow-2xl border border-zinc-800">
@@ -97,11 +91,6 @@ export default function SettingsForm() {
               required
               className="w-full px-4 py-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-200"
             />
-            {field === 'bio' && (
-              <p className="text-xs text-zinc-400 mt-1 text-right">
-                {form.bio.length}/200 characters
-              </p>
-            )}
           </div>
         ))}
 
