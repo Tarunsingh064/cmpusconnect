@@ -5,10 +5,10 @@
   width: 6px;
 }
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #facc15, #a855f7); /* yellow to purple */
+  background: linear-gradient(to bottom, #6366f1, #ec4899);
   border-radius: 10px;
 }
 .custom-scroll::-webkit-scrollbar-track {
-  background: #0f111a;
+  background: transparent;
 }
 
