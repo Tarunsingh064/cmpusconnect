@@ -63,14 +63,12 @@ export default function Herosection() {
             </div>
           </div>
 
-          {/* RIGHT CARD (conditionally rendered) */}
-          <div className="hidden lg:flex items-center justify-center">
+          {/* RIGHT CARD (Responsive) */}
+          <div className="flex items-center justify-center w-full lg:w-auto mt-8 lg:mt-0">
             {user ? (
-              
-    <PortfolioSection />
-  
+              <PortfolioSection />
             ) : (
-              <div className="bg-gradient-to-tr from-[#1e1b4b] to-[#312e81] rounded-xl p-8 w-[300px] min-h-[420px] shadow-xl border border-[#312e81] flex flex-col justify-between backdrop-blur-md">
+              <div className="bg-gradient-to-tr from-[#1e1b4b] to-[#312e81] rounded-xl p-8 w-full max-w-sm shadow-xl border border-[#312e81] flex flex-col justify-between backdrop-blur-md">
                 <div>
                   <div className="w-16 h-16 rounded-full bg-purple-600 mx-auto mb-4" />
                   <h3 className="text-center text-white font-bold text-lg">
