@@ -95,12 +95,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL','sqlite:///db.sqlite3'),
-        conn_max_age=600,  # enables connection pooling
+    'default': dj_database_url.parse(
+        "postgresql://cashflixdb:tKhyvVkjWCYKBtKbentCZ2D4Q5HhyNXs@dpg-d1n84k0dl3ps7383d76g-a.oregon-postgres.render.com/cashflixdb",
+        conn_max_age=600,
+        ssl_require=True
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
