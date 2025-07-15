@@ -28,7 +28,7 @@ export default function PortfolioSection() {
   }, [user]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#0e0f1a] via-[#1a1d2e] to-[#12141e]">
+    <div className="min-h-screen flex items-center justify-center p-4 ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
