@@ -36,7 +36,7 @@ export default function PortfolioSection() {
 
   if (!bioExists) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1c2b] via-[#0f101a] to-[#0b0c17] text-white">
         <p className="text-xl mb-4">No bio found for this user.</p>
         <Link
           onClick={() => router.push('/settings')}
@@ -51,22 +51,22 @@ export default function PortfolioSection() {
 
   if (!bio) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1c2b] via-[#0f101a] to-[#0b0c17] text-white">
         <p className="text-lg animate-pulse">Loading Bio...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-black via-gray-900 to-black">
+    <div className="w-full min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#1c1f2e] via-[#11131e] to-[#0b0c17]">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-white/10 backdrop-blur-lg text-white rounded-2xl border border-gray-600 shadow-2xl p-5 relative overflow-hidden"
+        className="w-full max-w-md bg-white/10 backdrop-blur-xl text-white rounded-2xl border border-gray-700 shadow-2xl p-5 relative overflow-hidden"
       >
         {/* Gradient ring */}
-        <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-br from-yellow-500/30 to-indigo-500/20 blur-[2px] pointer-events-none" />
+        <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-br from-yellow-500/20 to-indigo-500/30 blur-[2px] pointer-events-none" />
 
         {/* Main content */}
         <div className="relative z-10 max-h-[75vh] overflow-y-auto custom-scroll space-y-4">
@@ -103,7 +103,6 @@ export default function PortfolioSection() {
   );
 }
 
-// ✅ Info Row with word limit and scroll for Bio
 function InfoRow({ label, value, scrollable = false }) {
   const wordCount = value ? value.trim().split(/\s+/).length : 0;
   const limitedValue =
