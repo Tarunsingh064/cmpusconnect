@@ -58,20 +58,20 @@ export default function PortfolioSection() {
   }
 
   return (
-    <div className="w-full p-4 sm:p-6 lg:p-10 flex items-center justify-center bg-transparent">
+    <div className="w-full p-4 flex items-center justify-center bg-transparent">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="w-full max-w-3xl sm:max-w-4xl bg-white dark:bg-gray-900 text-white rounded-2xl shadow-2xl border border-gray-700 p-6 md:p-10"
+        className="w-full max-w-2xl bg-white dark:bg-gray-900 text-white rounded-2xl shadow-xl border border-gray-700 p-4 sm:p-6"
       >
-        <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-yellow-400">{user?.username}</h2>
-          <p className="text-sm text-gray-400">User Profile</p>
+        <div className="text-center mb-4">
+          <h2 className="text-2xl font-bold text-yellow-400">{user?.username}</h2>
+          <p className="text-xs text-gray-400">User Profile</p>
         </div>
 
-        <div className="flex justify-center mb-6">
-          <div className="w-32 h-32 md:w-36 md:h-36 relative rounded-full overflow-hidden border-4 border-indigo-500 shadow-md">
+        <div className="flex justify-center mb-4">
+          <div className="w-28 h-28 relative rounded-full overflow-hidden border-4 border-indigo-500 shadow-md">
             <Image
               src={user?.profileImage || '/placeholder-user.png'}
               alt="Profile Image"
@@ -81,7 +81,7 @@ export default function PortfolioSection() {
           </div>
         </div>
 
-        <div className="space-y-4 text-sm md:text-base">
+        <div className="space-y-3 text-sm">
           <InfoRow label="Email" value={user?.email} />
           <InfoRow label="Bio" value={bio.bio} scrollable />
           <InfoRow label="College" value={bio.college_name} />
@@ -93,7 +93,7 @@ export default function PortfolioSection() {
   );
 }
 
-// ✅ InfoRow with scroll + 200 word limit
+// ✅ Scrollable InfoRow with 200-word limit
 function InfoRow({ label, value, scrollable = false }) {
   const wordCount = value ? value.trim().split(/\s+/).length : 0;
   const limitedValue =
@@ -102,14 +102,14 @@ function InfoRow({ label, value, scrollable = false }) {
       : value;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b pb-4 border-gray-700 gap-2">
-      <span className="text-gray-400 font-medium sm:w-1/4">{label}</span>
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b pb-3 border-gray-700 gap-1">
+      <span className="text-gray-400 font-medium sm:w-1/3">{label}</span>
       {scrollable ? (
-        <div className="max-h-32 overflow-y-auto p-3 bg-zinc-800 rounded-md text-white w-full sm:w-3/4 text-sm whitespace-pre-wrap scrollbar-thin scrollbar-thumb-yellow-400 scrollbar-track-gray-700">
+        <div className="max-h-28 overflow-y-auto p-2 bg-zinc-800 rounded-md text-white w-full sm:w-2/3 text-xs whitespace-pre-wrap scrollbar-thin scrollbar-thumb-yellow-400 scrollbar-track-gray-700">
           {limitedValue || '—'}
         </div>
       ) : (
-        <span className="font-medium text-white text-right sm:text-left break-words sm:w-3/4">
+        <span className="font-medium text-white text-right sm:text-left break-words sm:w-2/3 text-sm">
           {value || '—'}
         </span>
       )}

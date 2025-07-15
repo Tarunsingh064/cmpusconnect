@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thumb-yellow-400::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+}
+.scrollbar-track-gray-700::-webkit-scrollbar-track {
+  background-color: #374151;
+}
