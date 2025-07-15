@@ -42,7 +42,7 @@ export default function Herosection() {
               partners, showcase their work, and collaborate on innovative ideas.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-start items-center">
+            <div className="mt-8 flex gap-4 flex-wrap">
               <Link
                 href={user ? "/Auth/dashboard" : "/Auth/login"}
                 className="bg-gradient-to-tr from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-xl backdrop-blur-md transition-all duration-300"
@@ -56,37 +56,37 @@ export default function Herosection() {
               </button>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="mt-12 flex gap-10 flex-wrap">
               <FeatureCard icon={<FaCode />} title="Coding Projects" desc="Find teammates" />
               <FeatureCard icon={<FaUserFriends />} title="Peer Network" desc="Connect with students" />
               <FeatureCard icon={<PiBookOpenTextLight />} title="Resources" desc="Access knowledge" />
             </div>
           </div>
 
-          {/* RIGHT CARD */}
-          <div className="flex justify-center lg:justify-end w-full">
-            <div className="w-full sm:w-[300px]">
-              {user ? (
-                <PortfolioSection />
-              ) : (
-                <div className="bg-gradient-to-tr from-[#1e1b4b] to-[#312e81] rounded-xl p-6 sm:p-8 w-full min-h-[420px] shadow-xl border border-[#312e81] flex flex-col justify-between backdrop-blur-md mt-6 lg:mt-0 mx-auto">
-                  <div>
-                    <div className="w-16 h-16 rounded-full bg-purple-600 mx-auto mb-4" />
-                    <h3 className="text-center text-white font-bold text-lg">
-                      Campus Collab Connect
-                    </h3>
-                    <p className="text-center text-sm text-gray-300 mt-2">
-                      Launching your innovation journey
-                    </p>
-                  </div>
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    <div className="h-4 bg-gray-600 rounded-md" />
-                    <div className="h-4 bg-cyan-400 rounded-md" />
-                    <div className="h-4 bg-gray-600 rounded-md col-span-2" />
-                  </div>
+          {/* RIGHT CARD (conditionally rendered) */}
+          <div className="hidden lg:flex items-center justify-center">
+            {user ? (
+              
+    <PortfolioSection />
+  
+            ) : (
+              <div className="bg-gradient-to-tr from-[#1e1b4b] to-[#312e81] rounded-xl p-8 w-[300px] min-h-[420px] shadow-xl border border-[#312e81] flex flex-col justify-between backdrop-blur-md">
+                <div>
+                  <div className="w-16 h-16 rounded-full bg-purple-600 mx-auto mb-4" />
+                  <h3 className="text-center text-white font-bold text-lg">
+                    Campus Collab Connect
+                  </h3>
+                  <p className="text-center text-sm text-gray-300 mt-2">
+                    Launching your innovation journey
+                  </p>
                 </div>
-              )}
-            </div>
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="h-4 bg-gray-600 rounded-md" />
+                  <div className="h-4 bg-cyan-400 rounded-md" />
+                  <div className="h-4 bg-gray-600 rounded-md col-span-2" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -151,8 +151,8 @@ export default function Herosection() {
 }
 
 const FeatureCard = ({ icon, title, desc }) => (
-  <div className="flex items-start gap-3">
-    <div className="text-cyan-400 text-xl mt-1">{icon}</div>
+  <div className="flex items-center gap-3">
+    <div className="text-cyan-400 text-xl">{icon}</div>
     <div>
       <p className="font-semibold text-white">{title}</p>
       <p className="text-sm text-gray-400">{desc}</p>
