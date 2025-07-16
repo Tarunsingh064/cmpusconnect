@@ -4,7 +4,7 @@ import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
 const PostCard = ({ post }) => {
-  const isImage = post.media?.endsWith('.jpg') || post.media?.endsWith('.png') || post.media?.endsWith('.jpeg');
+  const isImage = post.media?.endsWith('.jpg') || post.media?.endsWith('.png') || post.media?.endsWith('.jpeg')|| post.media?.endsWith('.webp');
   const isVideo = post.media?.endsWith('.mp4') || post.media?.endsWith('.webm');
 
   return (
