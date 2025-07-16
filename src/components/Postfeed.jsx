@@ -11,7 +11,7 @@ const PostsFeed = () => {
 
   const fetchPosts = async (pageNum) => {
     try {
-      const res = await fetch(`https://www.campusconnects.in/api/post/posts/?page=${pageNum}`);
+      const res = await fetch(`https://www.campusconnects.in/api/post/posts/`);
       const data = await res.json();
 
       if (data.length === 0) {
