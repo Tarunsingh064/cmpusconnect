@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import PostsFeed from '@/components/postfeed';
 
 export default function Page() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -106,7 +107,7 @@ export default function Page() {
             transition={{ duration: 0.6 }}
             className="border-2 border-dashed border-gray-500 rounded-2xl p-10 text-center text-gray-300 text-base"
           >
-            🚧 This is your middle content area. You can build post feed, editor, etc. here later.
+            <PostsFeed/>
           </motion.div>
         </main>
 
