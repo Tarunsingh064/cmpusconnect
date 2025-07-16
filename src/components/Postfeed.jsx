@@ -2,16 +2,18 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import PostCard from './Postcard';
+import { useAuth } from '@/Authcontext/Authcontext'; // Adjust the path based on your project
 
 const PostsFeed = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
+  const { user } = useAuth();
 
   const fetchPosts = async (pageNum) => {
     try {
-      const res = await fetch(`https://campusconnect-ki0p.onrender.com/api/post/posts/`);
+      const res = await fetch(`http://127.0.0.1:8000/api/post/posts/?page=${pageNum}`);
       const data = await res.json();
 
       if (data.length === 0) {
@@ -56,7 +58,7 @@ const PostsFeed = () => {
         )
       )}
       {!hasMore && (
-        <p className="text-center text-sm text-gray-400 py-4">No more posts</p>
+        <p className="text-center text-sm text-gray-400 py-4">No more posts to load.</p>
       )}
     </div>
   );
