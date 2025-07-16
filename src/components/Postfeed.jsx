@@ -13,7 +13,7 @@ const PostsFeed = () => {
 
   const fetchPosts = async (pageNum) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/post/posts/?page=${pageNum}`);
+      const res = await fetch(`https://campusconnect-ki0p.onrender.com/api/post/posts/`);
       const data = await res.json();
 
       if (data.length === 0) {
