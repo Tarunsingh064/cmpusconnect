@@ -9,4 +9,5 @@ urlpatterns = [
     #path('order/',include('api.order.urls')),
     path('api-token-auth/',views.obtain_auth_token,name='api_token_auth'),
     path('userbio/', include('api.userbio.urls')),
+    path('post/', include('api.post.urls')),
 ]

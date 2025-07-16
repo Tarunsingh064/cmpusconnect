@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'api',
     'api.user',
     'api.userbio',
+    'api.post',
 ]
 
 MIDDLEWARE = [
