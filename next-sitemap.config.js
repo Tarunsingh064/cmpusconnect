@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://www.campusconnects.in/',
+  siteUrl: 'https://campusconnects.in/',
   generateRobotsTxt: true,
   sitemapSize: 7000,
   changefreq: 'daily',
