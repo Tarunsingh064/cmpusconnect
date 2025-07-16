@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.campusconnects.in/
+
+# Sitemaps
+Sitemap: https://www.campusconnects.in/sitemap.xml
