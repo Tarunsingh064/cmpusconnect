@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import PostCard from './Postcard';
+import PostCard from './PostCard';
 
 const PostsFeed = () => {
   const [posts, setPosts] = useState([]);
@@ -45,20 +45,18 @@ const PostsFeed = () => {
   );
 
   return (
-    <div className="h-[500px] overflow-y-auto pr-2">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {posts.map((post, index) =>
-          index === posts.length - 1 ? (
-            <div key={post.id} ref={lastPostRef}>
-              <PostCard post={post} />
-            </div>
-          ) : (
-            <PostCard key={post.id} post={post} />
-          )
-        )}
-      </div>
+    <div className="overflow-y-auto max-h-[600px] divide-y divide-gray-200 dark:divide-gray-700">
+      {posts.map((post, index) =>
+        index === posts.length - 1 ? (
+          <div key={post.id} ref={lastPostRef}>
+            <PostCard post={post} />
+          </div>
+        ) : (
+          <PostCard key={post.id} post={post} />
+        )
+      )}
       {!hasMore && (
-        <p className="text-center text-sm text-gray-400 mt-4">No more posts to load.</p>
+        <p className="text-center text-sm text-gray-400 py-4">No more posts</p>
       )}
     </div>
   );
