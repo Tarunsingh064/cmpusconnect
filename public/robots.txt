@@ -1,11 +1,9 @@
 # *
 User-agent: *
-Disallow: /Auth
-Disallow: /admin
-Disallow: /dashboard
+Allow: /
 
 # Host
-Host: https://campusconnects.in
+Host: https://campusconnects.in/
 
 # Sitemaps
 Sitemap: https://campusconnects.in/sitemap.xml
