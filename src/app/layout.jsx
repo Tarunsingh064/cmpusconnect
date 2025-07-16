@@ -19,7 +19,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
+      
+      <body>
+        <AuthProvider>
+        <Header />
+        {children}
+        <Footer />
+        </AuthProvider>
+      </body>
+      
+<Head>
         <title>CampusConnects | Connect and Build</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="google-site-verification" content="KPKs3OsCjZAtRcjQUgJrBbd7GUgwR8VBQquPK2PlHiw" />
@@ -54,15 +63,6 @@ export default function RootLayout({ children }) {
         />
         <meta name="twitter:image" content="https://www.campusconnects.in/og-image.jpg" />
       </Head>
-      <body>
-        <AuthProvider>
-        <Header />
-        {children}
-        <Footer />
-        </AuthProvider>
-      </body>
-      
-
       
     </html>
   );
