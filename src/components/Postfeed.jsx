@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import PostCard from './PostCard';
+import PostCard from './Postcard';
 
 const PostsFeed = () => {
   const [posts, setPosts] = useState([]);

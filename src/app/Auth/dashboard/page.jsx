@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import PostsFeed from '@/components/PostFeed';
+import PostsFeed from '@/components/Postfeed';
 
 export default function Page() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
