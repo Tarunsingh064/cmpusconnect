@@ -62,6 +62,14 @@ INSTALLED_APPS = [
     
 ]
 
+import cloudinary
+
+cloudinary.config(
+    cloud_name='drpsr7nmk',
+    api_key='455291478364343',
+    api_secret='kAex1p2BJ5tS-nEBN_A6umGPHLc'
+)
+
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'drpsr7nmk',
