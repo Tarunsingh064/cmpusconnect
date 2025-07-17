@@ -29,7 +29,10 @@ SECRET_KEY = 'django-insecure-w&q_wdq!@o*jb#zc!^@qfmu8$%a4(918#k==p0-f32$n&06%(&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['campusconnect-ki0p.onrender.com']
+ALLOWED_HOSTS = ['campusconnect-ki0p.onrender.com', "127.0.0.1",
+    "localhost",
+    "http://127.0.0.1:8000",
+    "192.168.0.174",  ]
 CORS_ALLOWED_ORIGINS = [
     'https://www.campusconnects.in',
 ]
@@ -53,7 +56,29 @@ INSTALLED_APPS = [
     'api',
     'api.user',
     'api.userbio',
+    'api.post',
+    'cloudinary',
+    'cloudinary_storage',
+    
 ]
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name='drpsr7nmk',
+    api_key='455291478364343',
+    api_secret='kAex1p2BJ5tS-nEBN_A6umGPHLc'
+)
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'drpsr7nmk',
+    'API_KEY': '455291478364343',
+    'API_SECRET': 'kAex1p2BJ5tS-nEBN_A6umGPHLc',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -89,13 +114,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+import dj_database_url
 
+DATABASES = {
+    'default': dj_database_url.parse(
+        "postgresql://cashflixdb:tKhyvVkjWCYKBtKbentCZ2D4Q5HhyNXs@dpg-d1n84k0dl3ps7383d76g-a.oregon-postgres.render.com/cashflixdb",
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
