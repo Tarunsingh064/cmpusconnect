@@ -75,6 +75,8 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'drpsr7nmk',
     'API_KEY': '455291478364343',
     'API_SECRET': 'kAex1p2BJ5tS-nEBN_A6umGPHLc',
+    'SECURE': True 
+
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
