@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import PostCard from './Postcard';
 import Cookies from 'js-cookie';
+import { formatDistanceToNow } from 'date-fns';
 
 const PostsFeed = () => {
   const [posts, setPosts] = useState([]);
   const [text, setText] = useState('');
   const [media, setMedia] = useState(null);
 
+  // Fetch all posts
   const fetchPosts = async () => {
     try {
       const res = await fetch('https://campusconnect-ki0p.onrender.com/api/post/posts/');
@@ -19,6 +20,7 @@ const PostsFeed = () => {
     }
   };
 
+  // Create new post
   const handleCreate = async () => {
     const formData = new FormData();
     formData.append('text', text);
@@ -45,10 +47,26 @@ const PostsFeed = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    setPosts((prev) => prev.filter((post) => post.id !== id));
+  // Delete post
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`https://campusconnect-ki0p.onrender.com/api/post/posts/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${Cookies.get('access_token')}`,
+        },
+      });
+      if (res.ok) {
+        setPosts((prev) => prev.filter((post) => post.id !== id));
+      } else {
+        console.error('Delete failed');
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
+  // Edit post
   const handleEdit = async (id, newText) => {
     try {
       const res = await fetch(`https://campusconnect-ki0p.onrender.com/api/post/posts/${id}/`, {
@@ -61,9 +79,7 @@ const PostsFeed = () => {
       });
       if (res.ok) {
         const updatedPost = await res.json();
-        setPosts((prev) =>
-          prev.map((post) => (post.id === id ? updatedPost : post))
-        );
+        setPosts((prev) => prev.map((post) => (post.id === id ? updatedPost : post)));
       } else {
         console.error('Edit failed');
       }
@@ -76,8 +92,61 @@ const PostsFeed = () => {
     fetchPosts();
   }, []);
 
+  // PostCard component inside same file
+  const PostCard = ({ post }) => {
+    const isImage = post.media?.endsWith('.jpg') || post.media?.endsWith('.png') || post.media?.endsWith('.jpeg') || post.media?.endsWith('.webp');
+    const isVideo = post.media?.endsWith('.mp4') || post.media?.endsWith('.webm');
+
+    const handleEditClick = () => {
+      const newText = prompt('Edit your post:', post.text);
+      if (newText && newText !== post.text) {
+        handleEdit(post.id, newText);
+      }
+    };
+
+    const handleDeleteClick = () => {
+      handleDelete(post.id);
+    };
+
+    return (
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gray-300 dark:bg-gray-700 rounded-full" />
+          <div>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{post.owner.username}</h2>
+            <p className="text-xs text-gray-500">
+              {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+            </p>
+          </div>
+        </div>
+        <p className="text-sm text-gray-800 dark:text-gray-100">{post.text}</p>
+
+        {post.media && (
+          <div className="rounded-lg overflow-hidden mt-2">
+            {isImage ? (
+              <img src={post.media} alt="Post media" className="w-full h-auto rounded-md" />
+            ) : isVideo ? (
+              <video controls className="w-full rounded-md">
+                <source src={post.media} />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <p className="text-xs text-gray-400">Unsupported media</p>
+            )}
+          </div>
+        )}
+
+        <div className="flex gap-2 text-sm text-white">
+          <button onClick={handleEditClick} className="bg-yellow-500 px-3 py-1 rounded">Edit</button>
+          <button onClick={handleDeleteClick} className="bg-red-500 px-3 py-1 rounded">Delete</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4">
+      {/* Create Post Form */}
       <div className="p-4 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded">
         <textarea
           value={text}
@@ -96,9 +165,10 @@ const PostsFeed = () => {
         </button>
       </div>
 
+      {/* All Posts */}
       <div className="overflow-y-auto max-h-[600px] divide-y divide-gray-200 dark:divide-gray-700">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} onDelete={handleDelete} onEdit={handleEdit} />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </div>

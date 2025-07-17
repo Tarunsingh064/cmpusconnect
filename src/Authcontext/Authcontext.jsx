@@ -1,4 +1,5 @@
 'use client';
+
 import { createContext, useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     if (access && userData) {
       setUser(JSON.parse(userData));
     } else {
-      router.push('/Auth/login'); // updated login route
+      router.push('/Auth/login');
     }
   }, []);
 
@@ -29,7 +30,6 @@ export const AuthProvider = ({ children }) => {
 
     const cookieOptions = {
       sameSite: 'Strict',
-      // secure: true, // ❌ remove in dev to allow cookies over http
     };
 
     Cookies.set('access_token', res.data.access, cookieOptions);
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove('refresh_token');
     Cookies.remove('user');
     setUser(null);
-    router.push('/Auth/login'); // updated login route
+    router.push('/Auth/login');
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
           const refresh = Cookies.get('refresh_token');
           if (!refresh) {
             console.warn('No refresh token, user probably logged out.');
-            return Promise.reject(error); // don't force logout
+            return Promise.reject(error);
           }
 
           try {
@@ -88,13 +88,12 @@ export const AuthProvider = ({ children }) => {
             const newAccess = res.data.access;
             Cookies.set('access_token', newAccess, {
               sameSite: 'Strict',
-              // secure: true, // ❌ remove in dev
             });
 
             originalRequest.headers.Authorization = `Bearer ${newAccess}`;
-            return axios(originalRequest); // retry original request
+            return axios(originalRequest);
           } catch (err) {
-            logout(); // only logout if refresh actually fails
+            logout();
             return Promise.reject(err);
           }
         }
