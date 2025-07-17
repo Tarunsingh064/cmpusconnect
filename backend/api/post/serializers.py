@@ -3,7 +3,7 @@ from .models import Post
 
 class PostSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
-    media = serializers.SerializerMethodField()  # ← Add this line
+    media = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -11,4 +11,6 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner', 'created_at']
 
     def get_media(self, obj):
-        return obj.media.url if obj.media else None
+        if obj.media:
+            return obj.media.url.replace("http://", "https://")
+        return None
