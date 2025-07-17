@@ -1,6 +1,8 @@
 from rest_framework import viewsets, permissions
 from .models import Post
 from .serializers import PostSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 # Custom permission: only owners can edit/delete
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -14,6 +16,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
+    parser_classes = [MultiPartParser, FormParser]  # ⬅️ Required!
 
     def get_permissions(self):
         if self.action in ['update', 'partial_update', 'destroy']:
@@ -24,3 +27,4 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
