@@ -1,9 +1,9 @@
-# serializers.py
 from rest_framework import serializers
 from .models import Post
 
 class PostSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
+    media = serializers.SerializerMethodField()  # ← Add this line
 
     class Meta:
         model = Post
