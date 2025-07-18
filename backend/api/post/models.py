@@ -5,7 +5,7 @@ from cloudinary.models import CloudinaryField
 
 class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
-    text = models.TextField()
+    text = models.TextField(blank=True, null=True)
     media = CloudinaryField('media', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
