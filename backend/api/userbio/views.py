@@ -8,6 +8,11 @@ from rest_framework.response import Response
 
 from .models import userbio
 from .serializers import PortfolioSerializer
+from rest_framework.pagination import PageNumberPagination
+
+
+class PortfolioPagination(PageNumberPagination):
+    page_size = 10  # Show 10 per page
 
 class UserPortfolioView(generics.RetrieveUpdateAPIView):
     serializer_class = PortfolioSerializer
@@ -30,4 +35,5 @@ class UserPortfolioView(generics.RetrieveUpdateAPIView):
 class AllUserPortfoliosView(generics.ListAPIView):
     queryset = userbio.objects.all()
     serializer_class = PortfolioSerializer
+    pagination_class = PortfolioPagination
     permission_classes = [permissions.IsAuthenticated]
