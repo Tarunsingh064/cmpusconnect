@@ -33,7 +33,12 @@ class UserPortfolioView(generics.RetrieveUpdateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class AllUserPortfoliosView(generics.ListAPIView):
-    queryset = userbio.objects.all()
     serializer_class = PortfolioSerializer
     pagination_class = PortfolioPagination
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return userbio.objects.select_related("user").only(
+            "bio", "media", "college_name", "college_year", "location",
+            "user__username", "user__email"
+        )
