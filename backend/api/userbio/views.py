@@ -29,13 +29,7 @@ class UserPortfolioView(generics.RetrieveUpdateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class PublicPortfolioView(RetrieveAPIView):
+class AllUserPortfoliosView(generics.ListAPIView):
+    queryset = userbio.objects.all()
     serializer_class = PortfolioSerializer
-    lookup_field = 'user__username'  # allow lookup by username
-
-    def get_object(self):
-        username = self.kwargs.get('username')
-        try:
-            return userbio.objects.get(user__username=username)
-        except userbio.DoesNotExist:
-            raise NotFound("No portfolio found for this user.")
+    permission_classes = [permissions.IsAuthenticated]
