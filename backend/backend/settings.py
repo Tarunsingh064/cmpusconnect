@@ -29,12 +29,12 @@ SECRET_KEY = 'django-insecure-w&q_wdq!@o*jb#zc!^@qfmu8$%a4(918#k==p0-f32$n&06%(&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['campusconnect-ki0p.onrender.com', 'https://www.campusconnects.in',"127.0.0.1",
+ALLOWED_HOSTS = ['campusconnect-ki0p.onrender.com', 'https://campusconnects.in',"127.0.0.1",
     "localhost",
     "http://127.0.0.1:8000",
     "192.168.0.174",  ]
 CORS_ALLOWED_ORIGINS = [
-    'https://www.campusconnects.in',
+    'https://campusconnects.in',
 ]
 
 SESSION_COOKIE_SECURE = True
