@@ -2,9 +2,18 @@ from rest_framework import viewsets, permissions
 from .models import Post
 from .serializers import PostSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
 
 
 # Custom permission: only owners can edit/delete
+def create(self, request, *args, **kwargs):
+    serializer = self.get_serializer(data=request.data)
+    if not serializer.is_valid():
+        print("Validation errors:", serializer.errors)
+        return Response(serializer.errors, status=400)
+    self.perform_create(serializer)
+    return Response(serializer.data, status=201)
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, OPTIONS for anyone
