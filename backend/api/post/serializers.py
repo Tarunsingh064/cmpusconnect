@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Post
 
 class PostSerializer(serializers.ModelSerializer):
-    owner_username = serializers.CharField(source='owner.username', read_only=True)
+    owner = serializers.CharField(source='owner.username', read_only=True)
     media = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
