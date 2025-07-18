@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import RetrieveAPIView
-
 
 # Create your views here
 # views.py
