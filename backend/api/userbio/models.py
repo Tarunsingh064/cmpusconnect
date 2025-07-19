@@ -11,3 +11,6 @@ class userbio(models.Model):
     college_name = models.CharField(max_length=150,blank=True,null=True)
     college_year = models.CharField(max_length=4,blank=True,null=True)
     location = models.CharField(max_length=150,blank=True,null=True)
+
+    def __str__(self):
+        return self.user.username
