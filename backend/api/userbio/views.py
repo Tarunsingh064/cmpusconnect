@@ -12,7 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class PortfolioPagination(PageNumberPagination):
-    page_size = 10  # Show 10 per page
+    page_size = 5 # Show 10 per page
 
 class UserPortfolioView(generics.RetrieveUpdateAPIView):
     serializer_class = PortfolioSerializer
