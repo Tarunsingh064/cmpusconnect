@@ -3,10 +3,11 @@ from rest_framework import serializers
 from .models import userbio
 
 class PortfolioSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
     media = serializers.ImageField(required=False, allow_null=True)
     class Meta:
         model = userbio
-        fields = '__all__'
+        fields = ['bio', 'media', 'media_url', 'college_name', 'college_year', 'location', 'user','user_name']
         read_only_fields = ['user']
     
 
