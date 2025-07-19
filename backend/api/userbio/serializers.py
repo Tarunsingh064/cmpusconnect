@@ -10,13 +10,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PortfolioSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    media = serializers.SerializerMethodField()
 
     class Meta:
         model = userbio
         fields = ['bio', 'media', 'college_name', 'college_year', 'location', 'user']
-
-    
-
+        
     def to_representation(self, instance):
         """ Add media URL formatting while keeping field writeable """
         rep = super().to_representation(instance)
