@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import RetrieveAPIView
 
 
 # Create your views here
@@ -10,7 +9,11 @@ from rest_framework.response import Response
 
 from .models import userbio
 from .serializers import PortfolioSerializer
+from rest_framework.pagination import PageNumberPagination
 
+
+class PortfolioPagination(PageNumberPagination):
+    page_size = 10
 class UserPortfolioView(generics.RetrieveUpdateAPIView):
     serializer_class = PortfolioSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -29,13 +32,13 @@ class UserPortfolioView(generics.RetrieveUpdateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class PublicPortfolioView(RetrieveAPIView):
+class AllUserPortfoliosView(generics.ListAPIView):
     serializer_class = PortfolioSerializer
-    lookup_field = 'user__username'  # allow lookup by username
+    pagination_class = PortfolioPagination
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get_object(self):
-        username = self.kwargs.get('username')
-        try:
-            return userbio.objects.get(user__username=username)
-        except userbio.DoesNotExist:
-            raise NotFound("No portfolio found for this user.")
+    def get_queryset(self):
+        return userbio.objects.select_related("user").only(
+            "bio", "media", "college_name", "college_year", "location",
+            "user__username", "user__email"
+        )
