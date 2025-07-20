@@ -9,7 +9,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'owner', 'owner_username', 'text', 'created_at']
-
+        read_only_fields = ['owner', 'created_at']
 
 class PostSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)

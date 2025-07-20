@@ -5,8 +5,24 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from .models import Comment
+from .serializers import CommentSerializer
 
+class IsCommentOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Only allow the comment owner to edit/delete.
+    """
 
+    def has_object_permission(self, request, view, obj):
+        return request.method in permissions.SAFE_METHODS or obj.owner == request.user
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all().order_by('-created_at')
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated, IsCommentOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 # Custom permission: only owners can edit/delete
 def create(self, request, *args, **kwargs):
@@ -51,13 +67,4 @@ class PostViewSet(viewsets.ModelViewSet):
             post.likes.add(user)
             return Response({"status": "liked"})
 
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
-    def comment(self, request, pk=None):
-        post = self.get_object()
-        comment = Comment.objects.create(
-            post=post,
-            author=request.user,
-            content=request.data.get('content')
-        )
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
