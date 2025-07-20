@@ -44,6 +44,13 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=400)
         self.perform_create(serializer)
         return Response(serializer.data, status=201)
+    
+    @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
+    def comments(self, request, pk=None):
+        post = self.get_object()
+        comments = post.comments.all().order_by('-created_at')
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def like(self, request, pk=None):
