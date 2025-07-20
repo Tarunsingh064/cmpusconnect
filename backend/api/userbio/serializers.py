@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PortfolioSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    media = serializers.SerializerMethodField()
+    media = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = userbio
