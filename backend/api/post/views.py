@@ -3,6 +3,9 @@ from .models import Post
 from .serializers import PostSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+
 
 
 # Custom permission: only owners can edit/delete
@@ -37,3 +40,24 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+        if user in post.likes.all():
+            post.likes.remove(user)
+            return Response({"status": "unliked"})
+        else:
+            post.likes.add(user)
+            return Response({"status": "liked"})
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def comment(self, request, pk=None):
+        post = self.get_object()
+        comment = Comment.objects.create(
+            post=post,
+            author=request.user,
+            content=request.data.get('content')
+        )
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

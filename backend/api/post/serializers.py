@@ -1,5 +1,15 @@
 from rest_framework import serializers
 from .models import Post
+from .models import Comment
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    owner_username = serializers.CharField(source='author.username', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'owner', 'owner_username', 'text', 'created_at']
+
 
 class PostSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
