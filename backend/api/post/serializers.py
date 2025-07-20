@@ -4,7 +4,7 @@ from .models import Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    owner_username = serializers.CharField(source='author.username', read_only=True)
+    owner_username = serializers.CharField(source='owner.username', read_only=True)
 
     class Meta:
         model = Comment
