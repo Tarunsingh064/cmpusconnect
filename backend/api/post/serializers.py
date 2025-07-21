@@ -28,7 +28,9 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_is_liked(self, obj):
         user = self.context.get('request').user
-        return user.is_authenticated and obj.likes.filter(id=user.id).exists()
+        if user.is_authenticated:
+            return user in obj.likes.all()
+        return False
     
     def to_representation(self, instance):
         """ Add media URL formatting while keeping field writeable """

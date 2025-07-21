@@ -45,6 +45,11 @@ class PostViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=201)
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+    
     @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
     def comments(self, request, pk=None):
         post = self.get_object()
