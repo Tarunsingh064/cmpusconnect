@@ -14,9 +14,9 @@ from django.core.mail import send_mail
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .serializers import RegisterSerializers,UserSerializers,LoginSerializers  # Make sure you have both serializers
+from .serializers import RegisterSerializers,UserSerializers,LoginSerializers
+#from rest_framework.decorators import api_view, permission_classes  # Make sure you have both serializers
 #from .serializers import VerifyPhoneSerializer
-
 
 # User Registration View
 class RegisterView(generics.CreateAPIView):

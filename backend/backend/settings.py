@@ -122,7 +122,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.parse(
-        "postgresql://cashflixdb:tKhyvVkjWCYKBtKbentCZ2D4Q5HhyNXs@dpg-d1n84k0dl3ps7383d76g-a.oregon-postgres.render.com/cashflixdb",
+        "postgresql://shaurya:kn86sUpxwwu04o20hdT4n1jb0xEOcJ6R@dpg-d275510gjchc73f8ec2g-a.oregon-postgres.render.com/campusconnect_pm0p",
         conn_max_age=600,
         ssl_require=True
     )
