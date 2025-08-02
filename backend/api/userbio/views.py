@@ -10,6 +10,14 @@ from rest_framework.pagination import PageNumberPagination
 class PortfolioPagination(PageNumberPagination):
     page_size = 10
 
+class CreateUserPortfolioView(generics.CreateAPIView):
+    serializer_class = PortfolioSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        
 class UserPortfolioView(generics.RetrieveUpdateAPIView):
     serializer_class = PortfolioSerializer
     permission_classes = [permissions.IsAuthenticated]
